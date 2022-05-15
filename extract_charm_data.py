@@ -470,7 +470,7 @@ def main():
 
     charms = getCharmsFromEquipmentBox(phwnd, dataManager)
 
-    online = True
+    online = False
     if online:
         # make sure it starts with https://raw.
         Charm.loadSkillNamesFromOnlineCSVUrl(
@@ -482,7 +482,7 @@ def main():
             # "lang/skills_zhTW.csv
         )
     else:
-        Charm.loadSkillNamesFromCSVFile("skills_English.csv")
+        Charm.loadSkillNamesFromCSVFile("skills_zhTW.csv")
     # print(Charm.SkillNames)
     data = ("\n".join(map(lambda c: c.toExportString(), charms)))
     print(data)
