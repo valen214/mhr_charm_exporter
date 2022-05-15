@@ -356,14 +356,20 @@ class Charm:
     def toExportString(self):
         if not Charm.SkillNames:
             raise Exception("skill names is not imported")
+
+        slots = (
+          [3] * self.Level3Slots +
+          [2] * self.Level2Slots +
+          [1] * self.Level1Slots +
+          [0, 0, 0]
+        )[:3]
+
         return ",".join([
             str(Charm.SkillNames.get(self.Skill1)),
             str(self.Skill1Level),
             str(Charm.SkillNames.get(self.Skill2)),
             str(self.Skill2Level),
-            str(self.Level1Slots),
-            str(self.Level2Slots),
-            str(self.Level3Slots),
+            *map(str, slots)
         ])
 
     @classmethod
@@ -470,7 +476,7 @@ def main():
 
     charms = getCharmsFromEquipmentBox(phwnd, dataManager)
 
-    online = False
+    online = True
     if online:
         # make sure it starts with https://raw.
         Charm.loadSkillNamesFromOnlineCSVUrl(
@@ -482,7 +488,7 @@ def main():
             # "lang/skills_zhTW.csv
         )
     else:
-        Charm.loadSkillNamesFromCSVFile("skills_zhTW.csv")
+        Charm.loadSkillNamesFromCSVFile("skills_English.csv")
     # print(Charm.SkillNames)
     data = ("\n".join(map(lambda c: c.toExportString(), charms)))
     print(data)
