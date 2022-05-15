@@ -422,7 +422,7 @@ def getCharmsFromEquipmentBox(phwnd, dataManager) -> list[Charm]:
         item = RPM(UINT, eqList.value)
         if item.value:
             eqType = RPM(EquipementType, item.value + Offsets.EQ_TYPE)
-            if eqType.value == EquipementTypeEnum.Talisman.value:
+            if eqType and eqType.value == EquipementTypeEnum.Talisman.value:
                 charm = Charm()
 
                 value = RPM(c_uint32, item.value + Offsets.RARITY)
@@ -470,7 +470,7 @@ def main():
 
     charms = getCharmsFromEquipmentBox(phwnd, dataManager)
 
-    online = False
+    online = True
     if online:
         # make sure it starts with https://raw.
         Charm.loadSkillNamesFromOnlineCSVUrl(
