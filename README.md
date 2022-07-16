@@ -5,29 +5,28 @@ for use on https://mhrise.wiki-db.com/sim/
 Huge part of the script is translated from https://github.com/Fexty12573/mhr-charm-item-editor
 
 ## Steps
-1. Open Monster Hunter Rise and select your character
-2. Run the [script: extract_charm_data.py](https://github.com/valen214/mhr_charm_exporter/blob/main/extract_charm_data.py), if everything goes well a file named 'charms_data.csv' will be created in the working directory or next to the script file.
-3. Open 'charms_data.csv' with notepad and copy the content
-4. paste it [here](https://mhrise.wiki-db.com/sim/) like so
+1. Set up [REFRAMEWORK](https://www.nexusmods.com/monsterhunterrise/mods/26)
+2. Download [charms_export.lua](https://raw.githubusercontent.com/valen214/mhr_charm_exporter/main/reframework/autorun/charms_export.lua) and put it under <MHR Game Directory>/reframework/autorun/
+3. Open Monster Hunter Rise and select your character
+4. Open the REFramework Menu and expand "Script Generated UI"
+5. Click on "[Charms Export] export charms to reframework/data/exported_charms.txt" [image steps](https://i.imgur.com/avFgVRS.gif)
+![click on export charm](https://i.imgur.com/avFgVRS.gif)
+6. Open 'reframework/data/exported_charms.txt' with notepad++
+7. remove all the quotes
+![(example with notepad++)](https://i.imgur.com/K3ndhlO.gif) and copy the content
+8. paste it [here](https://mhrise.wiki-db.com/sim/) like so
 ![mhr sim charm import](https://i.imgur.com/zslFWI3.png)
-5. Done
+9. Done
 ![mhr sim charm import](https://i.imgur.com/1BVQHTP.png)
 
 
 ## Requirements
-Python 3.10 (tested environment, Python 3.4 or lower is guaranteed to fail as the script uses something from 3.5+)
-Windows 64bit (I hard-coded the size of a pointer, search for "32bit" in the source code to see where)
+[REFRAMEWORK](https://www.nexusmods.com/monsterhunterrise/mods/26)
 
 
 ## Other languages
-
-### Change skill names csv
-![change skill names csv](https://i.imgur.com/eCVnz8K.png)
-From @Fexty's repo there are 3 csv available, actually I think he provided a skill names exporter as well, check [here](https://github.com/Fexty12573/mhr-charm-item-editor/tree/master/RisePCItemEditor/lang/converter)
-In order to use local csv file, you need to set online to False as seen from the first line of the image, and change the csv file names in the else clause accordingly.
+Now the lua script should grab the names directly from your game, so it would have the same language as your game does, if you need another language, might seek the steps to change the ingame language
 
 ## TODO (WON'T DO)
-I know those stuff that can improve user experience, like GUI,
-remove useless print so one can execute and save input with a single command `py script.py > charms.csv`,
-throw error and display error message when something goes wrong
+I know how to compile a separate dll in order to save the output without using the json format provided by REFramework, and thus not needing to replace the quotes, etc.
 but it works right now so I won't bother to change/add anything
