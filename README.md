@@ -6,17 +6,16 @@ Huge part of the script is translated from https://github.com/Fexty12573/mhr-cha
 
 ## Steps
 1. Set up [REFRAMEWORK](https://www.nexusmods.com/monsterhunterrise/mods/26)
-2. Download [charms_export.lua](https://raw.githubusercontent.com/valen214/mhr_charm_exporter/main/reframework/autorun/charms_export.lua) and put it under <MHR Game Directory>/reframework/autorun/
+2. Download [reframework.zip](https://github.com/valen214/mhr_charm_exporter/releases/download/v2.1.0/reframework.zip) and extract the content under <MHR Game Directory>/reframework
 3. Open Monster Hunter Rise and select your character
 4. Open the REFramework Menu and expand "Script Generated UI"
 5. Click on "[Charms Export] export charms to reframework/data/exported_charms.txt" [image steps](https://i.imgur.com/avFgVRS.gif)
 ![click on export charm](https://i.imgur.com/avFgVRS.gif)
-6. Open 'reframework/data/exported_charms.txt' with notepad++
-7. remove all the quotes
-![(example with notepad++)](https://i.imgur.com/K3ndhlO.gif) and copy the content
-8. paste it [here](https://mhrise.wiki-db.com/sim/) like so
+5.5 If the button is not showing, try expand "ScriptRunner" and click "Reset scripts"
+6. Open 'reframework/data/exported_charms.txt' with notepad++ and copy the content
+7. paste it [here](https://mhrise.wiki-db.com/sim/) like so
 ![mhr sim charm import](https://i.imgur.com/zslFWI3.png)
-9. Done
+8. Done
 ![mhr sim charm import](https://i.imgur.com/1BVQHTP.png)
 
 
