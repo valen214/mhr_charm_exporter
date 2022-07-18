@@ -10,22 +10,10 @@ local _log = function(str)
   log.debug("[Charms Export] " .. (str or ""));
 end;
 
+local DataShortcut = sdk.find_type_definition("snow.data.DataShortcut");
+local getSkillName = DataShortcut:get_method("getName(snow.data.DataDef.PlEquipSkillId)");
+
 local charmToString = function(item)
-  local DataManager = sdk.get_managed_singleton("snow.data.DataManager");
-  if not DataManager then
-    log.debug("DataManager is empty!");
-    return ""
-  end
-  
-  local EquipmentBox = DataManager:get_field("_PlEquipBox");
-  
-  local InventoryList = EquipmentBox:get_field("_WeaponArmorInventoryList");
-  
-  local DataShortcut = sdk.find_type_definition("snow.data.DataShortcut");
-  local getSkillName = DataShortcut:get_method("getName(snow.data.DataDef.PlEquipSkillId)");
-  
-  
-  local itemCount = InventoryList:call("get_Count");
   local itemType = item:get_field("_IdType");
   if itemType ~= TALISMAN_ID_TYPE then -- Talisman: 3
     _log("attempt to parse non charm to string")
@@ -61,6 +49,20 @@ local charmToString = function(item)
 end
 
 local function getCharmsStringList()
+  local DataManager = sdk.get_managed_singleton("snow.data.DataManager");
+  if not DataManager then
+    log.debug("DataManager is empty!");
+    return ""
+  end
+  
+  local EquipmentBox = DataManager:get_field("_PlEquipBox");
+  
+  local InventoryList = EquipmentBox:get_field("_WeaponArmorInventoryList");
+  
+  
+  
+  local itemCount = InventoryList:call("get_Count");
+
   local charmsStringList = {}
   setmetatable(charmsStringList, { __shl = function (t,v) t[#t+1]=v end })
   

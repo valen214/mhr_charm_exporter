@@ -8,7 +8,7 @@ make: *** No rule to make target '"src/charms_export_lib.cpp"', needed by 'all'.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 18 22:56:49 2022
+# Make data base, printed on Mon Jul 18 23:05:25 2022
 
 # Variables
 
@@ -41,7 +41,7 @@ MAKE_COMMAND := make.exe
 # environment
 LUA_DEV = C:\Program Files\Lua
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_8400_NAJXAQWRQUNMRPFI
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_17524_MIUSXRAWMBVPDEAP
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -93,7 +93,7 @@ MAKEFILE_LIST := Makefile .env
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 8400
+VSCODE_PID = 17524
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # automatic
@@ -166,8 +166,6 @@ USERDOMAIN = DESKTOP-2B0JJSC
 GNUMAKEFLAGS := 
 # environment
 OS = Windows_NT
-# environment
-__COMPAT_LAYER = DetectorsAppHealth
 # makefile
 .DEFAULT_GOAL := all
 # default
@@ -213,7 +211,7 @@ PROCESSOR_REVISION = 2100
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 # variable set hash-table stats:
-# Load=100/1024=10%, Rehash=0, Collisions=10/130=8%
+# Load=99/1024=10%, Rehash=0, Collisions=10/129=8%
 
 # Pattern-specific Variable Values
 
@@ -221,7 +219,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 
 # Directories
 
-# . (key d:/workspace/mhr_charm_exporter, mtime 1658156209): 11 files, no impossibilities.
+# . (key d:/workspace/mhr_charm_exporter, mtime 1658156494): 11 files, no impossibilities.
 
 # 11 files, no impossibilities in 1 directories.
 
@@ -318,6 +316,6 @@ test:
 # strcache performance: lookups = 30 / hit rate = 36%
 # hash-table stats:
 # Load=19/8192=0%, Rehash=0, Collisions=0/30=0%
-# Finished Make data base on Mon Jul 18 22:56:49 2022
+# Finished Make data base on Mon Jul 18 23:05:25 2022
 
  
