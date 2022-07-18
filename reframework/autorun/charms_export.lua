@@ -49,10 +49,13 @@ local charmToString = function(item)
 end
 
 local function getCharmsStringList()
+  local charmsStringList = {}
+
+
   local DataManager = sdk.get_managed_singleton("snow.data.DataManager");
   if not DataManager then
     log.debug("DataManager is empty!");
-    return ""
+    return charmsStringList
   end
   
   local EquipmentBox = DataManager:get_field("_PlEquipBox");
@@ -62,8 +65,6 @@ local function getCharmsStringList()
   
   
   local itemCount = InventoryList:call("get_Count");
-
-  local charmsStringList = {}
   setmetatable(charmsStringList, { __shl = function (t,v) t[#t+1]=v end })
   
   for i = 0,itemCount-1,1 do
@@ -95,7 +96,7 @@ re.on_draw_ui(function()
   ) then
 		
     -- local output = table.concat(charmsStringList, "\n");
-    local output = getCharmsStringList() or ""
+    local output = getCharmsStringList() or {}
 
     if saveToFile then
       saveToFile(

@@ -8,7 +8,7 @@ make: *** No rule to make target '"src/charms_export_lib.cpp"', needed by 'all'.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 18 23:05:25 2022
+# Make data base, printed on Mon Jul 18 23:14:08 2022
 
 # Variables
 
@@ -41,7 +41,7 @@ MAKE_COMMAND := make.exe
 # environment
 LUA_DEV = C:\Program Files\Lua
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_17524_MIUSXRAWMBVPDEAP
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_18908_HBITOHTDZWIMOLGD
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -93,7 +93,7 @@ MAKEFILE_LIST := Makefile .env
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 17524
+VSCODE_PID = 18908
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # automatic
@@ -219,7 +219,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 
 # Directories
 
-# . (key d:/workspace/mhr_charm_exporter, mtime 1658156494): 11 files, no impossibilities.
+# . (key d:/workspace/mhr_charm_exporter, mtime 1658156983): 11 files, no impossibilities.
 
 # 11 files, no impossibilities in 1 directories.
 
@@ -316,6 +316,6 @@ test:
 # strcache performance: lookups = 30 / hit rate = 36%
 # hash-table stats:
 # Load=19/8192=0%, Rehash=0, Collisions=0/30=0%
-# Finished Make data base on Mon Jul 18 23:05:25 2022
+# Finished Make data base on Mon Jul 18 23:14:08 2022
 
  
