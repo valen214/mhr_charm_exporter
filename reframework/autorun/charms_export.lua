@@ -10,29 +10,26 @@ local _log = function(str)
   log.debug("[Charms Export] " .. (str or ""));
 end;
 
-
-local DataManager = sdk.get_managed_singleton("snow.data.DataManager");
-if not DataManager then
-  log.debug("DataManager is empty!");
-  return
-end
-
-local EquipmentBox = DataManager:get_field("_PlEquipBox");
-
-local InventoryList = EquipmentBox:get_field("_WeaponArmorInventoryList");
-
-local DataShortcut = sdk.find_type_definition("snow.data.DataShortcut");
-local getSkillName = DataShortcut:get_method("getName(snow.data.DataDef.PlEquipSkillId)");
-
-
-local itemCount = InventoryList:call("get_Count");
-
-
 local charmToString = function(item)
+  local DataManager = sdk.get_managed_singleton("snow.data.DataManager");
+  if not DataManager then
+    log.debug("DataManager is empty!");
+    return ""
+  end
+  
+  local EquipmentBox = DataManager:get_field("_PlEquipBox");
+  
+  local InventoryList = EquipmentBox:get_field("_WeaponArmorInventoryList");
+  
+  local DataShortcut = sdk.find_type_definition("snow.data.DataShortcut");
+  local getSkillName = DataShortcut:get_method("getName(snow.data.DataDef.PlEquipSkillId)");
+  
+  
+  local itemCount = InventoryList:call("get_Count");
   local itemType = item:get_field("_IdType");
   if itemType ~= TALISMAN_ID_TYPE then -- Talisman: 3
     _log("attempt to parse non charm to string")
-    return
+    return ""
   end
 
   local repr = ""
@@ -96,7 +93,7 @@ re.on_draw_ui(function()
   ) then
 		
     -- local output = table.concat(charmsStringList, "\n");
-    local output = getCharmsStringList()
+    local output = getCharmsStringList() or ""
 
     if saveToFile then
       saveToFile(
