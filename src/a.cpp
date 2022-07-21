@@ -22,6 +22,8 @@ void writeToFile(string path, string content){
   fs::path p(path);
   fs::create_directories(p.parent_path());
   ofstream(p) << content;
+
+  
 }
 
 
