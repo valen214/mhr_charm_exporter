@@ -91,10 +91,10 @@ local saveToFile = package.loadlib(
 
 local outputFileName = "exported_charms.txt"
 re.on_draw_ui(function()
-	if imgui.button(
+  if imgui.button(
     "[Charms Export] export charms to reframework/data/" .. outputFileName
   ) then
-		
+    
     -- local output = table.concat(charmsStringList, "\n");
     local output = getCharmsStringList() or {}
 
@@ -107,12 +107,10 @@ re.on_draw_ui(function()
       json.dump_file(outputFileName, output)
     end
 
-    
     --[[
     _log(table.concat(output, "\n"))
     --]]
-
-	end
+  end
 end)
 
 

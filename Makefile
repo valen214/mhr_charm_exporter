@@ -15,21 +15,29 @@ OUTPUT_DLL_PATH=$(OUTPUT_DIR)\charms_export_lib.dll
 
 TEST_LIBS=Shell32.lib,Ole32.lib,Comctl32.lib,Propsys.lib,Shlwapi.lib
 
-all: "src/charms_export_lib.cpp"
+all: dll
+	copy /Y \
+		"reframework\autorun\charms_export.lua" \
+		"$(GAME_REFRAMEWORK_AUTORUN_DIR)"
+	copy /B /Y "$(OUTPUT_DLL_PATH)" \
+		"$(GAME_REFRAMEWORK_AUTORUN_DIR)/charms_export/"
+
+dll: "src/charms_export_lib.c"
 	if not exist "$(OUTPUT_DIR:/=\)" mkdir "$(OUTPUT_DIR:/=\)"
 
-	cl /nologo /EHsc /std:c++17 \
-		/D_USRDLL /D_WINDLL src/charms_export_lib.cpp \
+# /EHsc /std:c++17
+	cl /nologo \
+		/D_USRDLL /D_WINDLL src/charms_export_lib.c \
 		/D "_CRT_SECURE_NO_WARNINGS" \
 		/LD /link /nologo \
 		/DEFAULTLIB:"C:\Program Files\Lua\lua54.lib" \
 		/DLL /OUT:"$(OUTPUT_DLL_PATH)"
 	del *.obj *.lib *.exp
 
-	copy /Y \
-		"reframework\autorun\charms_export.lua" \
-		"$(GAME_REFRAMEWORK_AUTORUN_DIR)"
-	copy /B /Y "$(OUTPUT_DLL_PATH)" "$(GAME_REFRAMEWORK_AUTORUN_DIR)/charms_export/"
+search: "src/armor_set_search/search.rs" "Cargo.toml"
+	rustc "src/armor_set_search/search.rs"
+	.\search.exe
+
 
 test:
 	echo $(INPUT:a=c) # Evaluates to "a and b"
@@ -37,6 +45,10 @@ test:
 testa:
 	cl /EHsc /std:c++17 /nologo src/a.cpp /link /out:a.exe
 	.\a.exe
+
+testdll: "tests/test_dll.lua" dll
+	lua tests\test_dll.lua
+
 
 dialog: src/test.cpp
 	cl /nologo \

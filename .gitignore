@@ -1,10 +1,25 @@
-charms_data.csv 
-.env
 
+# data
+
+charms_data.csv
+
+
+
+# localized env
+
+.env
+.vscode
+
+
+
+# inter binaries
 
 *.obj
+*.lib
+*.exp
+*.pdb
 
-.vscode
+
 
 # Added by cargo
 
