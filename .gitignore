@@ -2,3 +2,8 @@ charms_data.csv
 .env
 
 .vscode
+
+# Added by cargo
+
+/target
+/Cargo.lock
