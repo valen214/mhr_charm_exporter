@@ -1,6 +1,9 @@
 charms_data.csv 
 .env
 
+
+.obj
+
 .vscode
 
 # Added by cargo

@@ -16,6 +16,8 @@ OUTPUT_DLL_PATH=$(OUTPUT_DIR)\charms_export_lib.dll
 TEST_LIBS=Shell32.lib,Ole32.lib,Comctl32.lib,Propsys.lib,Shlwapi.lib
 
 all: "src/charms_export_lib.cpp"
+	mkdir $(OUTPUT_DIR:/=\)
+
 	cl /nologo /D_USRDLL /D_WINDLL src/charms_export_lib.cpp \
 		/D "_CRT_SECURE_NO_WARNINGS" \
 		/LD /link /nologo \
