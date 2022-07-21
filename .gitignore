@@ -2,7 +2,7 @@ charms_data.csv
 .env
 
 
-.obj
+*.obj
 
 .vscode
 

@@ -16,9 +16,10 @@ OUTPUT_DLL_PATH=$(OUTPUT_DIR)\charms_export_lib.dll
 TEST_LIBS=Shell32.lib,Ole32.lib,Comctl32.lib,Propsys.lib,Shlwapi.lib
 
 all: "src/charms_export_lib.cpp"
-	mkdir $(OUTPUT_DIR:/=\)
+	if not exist "$(OUTPUT_DIR:/=\)" mkdir "$(OUTPUT_DIR:/=\)"
 
-	cl /nologo /D_USRDLL /D_WINDLL src/charms_export_lib.cpp \
+	cl /nologo /EHsc /std:c++17 \
+		/D_USRDLL /D_WINDLL src/charms_export_lib.cpp \
 		/D "_CRT_SECURE_NO_WARNINGS" \
 		/LD /link /nologo \
 		/DEFAULTLIB:"C:\Program Files\Lua\lua54.lib" \
@@ -32,6 +33,10 @@ all: "src/charms_export_lib.cpp"
 
 test:
 	echo $(INPUT:a=c) # Evaluates to "a and b"
+
+testa:
+	cl /EHsc /std:c++17 /nologo src/a.cpp /link /out:a.exe
+	.\a.exe
 
 dialog: src/test.cpp
 	cl /nologo \

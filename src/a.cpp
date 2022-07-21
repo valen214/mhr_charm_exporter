@@ -8,12 +8,23 @@
   #include "lauxlib.h"
 #endif
 
+#include <iostream>
+#include <filesystem>
+#include <fstream>
+#include <string>
+
+namespace fs = std::filesystem;
+using namespace std;
+
 __declspec(dllimport) int l_saveToFile(lua_State *L);
 
-void main(){
-  FILE *fptr = fopen("D:\\temp.txt", "w");
-  if(fptr == NULL) return;
+void writeToFile(string path, string content){
+  fs::path p(path);
+  fs::create_directories(p.parent_path());
+  ofstream(p) << content;
+}
 
-  fprintf(fptr, "Hello World");
-  fclose(fptr);
+
+void main(){
+  writeToFile("C:\\Users/User/Desktop/bc/def/a.txt", "abcdef");
 }
