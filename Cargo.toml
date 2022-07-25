@@ -6,4 +6,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-phf = { version = "0.11", features = ["macros"] }
+itertools = "0.10.3"
+lazy_static = "1.4.0"
+# phf = { version = "0.11", features = ["macros"] }
+
+strum = { version = "0.24", features = ["derive"] }
+strum_macros = "0.24"
+
+
+[[bin]]
+name = "search"

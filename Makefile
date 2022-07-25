@@ -34,17 +34,22 @@ dll: "src/charms_export_lib.c"
 		/DLL /OUT:"$(OUTPUT_DLL_PATH)"
 	del *.obj *.lib *.exp
 
-search: "src/armor_set_search/search.rs" "Cargo.toml"
-	rustc "src/armor_set_search/search.rs"
-	.\search.exe
+search: "src/armor_set_search/search.ts"
+	ts-node src/armor_set_search/search.ts
+
+
+search_rust: "src/armor_set_search/search.rs" "Cargo.toml"
+  cargo run --bin "search"
+# rustc "src/armor_set_search/search.rs"
+# .\search.exe
 
 
 test:
 	echo $(INPUT:a=c) # Evaluates to "a and b"
 
 testa:
-	cl /EHsc /std:c++17 /nologo src/a.cpp /link /out:a.exe
-	.\a.exe
+	cl /EHsc /std:c++17 /nologo tests/a.cpp /link /out:tests\a.exe
+	.\tests\a.exe
 
 testdll: "tests/test_dll.lua" dll
 	lua tests\test_dll.lua
