@@ -15,12 +15,18 @@ OUTPUT_DLL_PATH=$(OUTPUT_DIR)\charms_export_lib.dll
 
 TEST_LIBS=Shell32.lib,Ole32.lib,Comctl32.lib,Propsys.lib,Shlwapi.lib
 
-all: dll
+all: dll lua
+	copy /B /Y "$(OUTPUT_DLL_PATH)" \
+		"$(GAME_REFRAMEWORK_AUTORUN_DIR)/charms_export/"
+
+lua:
 	copy /Y \
 		"reframework\autorun\charms_export.lua" \
 		"$(GAME_REFRAMEWORK_AUTORUN_DIR)"
-	copy /B /Y "$(OUTPUT_DLL_PATH)" \
-		"$(GAME_REFRAMEWORK_AUTORUN_DIR)/charms_export/"
+
+watch:
+	yarn nodemon -L --delay 200ms \
+		--exec "make lua" reframework\autorun\charms_export.lua 
 
 dll: "src/charms_export_lib.c"
 	if not exist "$(OUTPUT_DIR:/=\)" mkdir "$(OUTPUT_DIR:/=\)"
@@ -35,14 +41,16 @@ dll: "src/charms_export_lib.c"
 	del *.obj *.lib *.exp
 
 search: "src/armor_set_search/search.ts"
-	ts-node src/armor_set_search/search.ts
+	yarn ts-node src/armor_set_search/search.ts
 
 
 search_rust: "src/armor_set_search/search.rs" "Cargo.toml"
-  cargo run --bin "search"
+	cargo run --bin "search"
 # rustc "src/armor_set_search/search.rs"
 # .\search.exe
 
+test_search_worker: src/lib/worker.ts
+	yarn ts-node src/lib/worker.ts
 
 test:
 	echo $(INPUT:a=c) # Evaluates to "a and b"

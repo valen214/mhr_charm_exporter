@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "name": "mhr_charm_exporter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.19.0",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.6.2",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1"
+  }
+}
