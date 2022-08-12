@@ -324,7 +324,7 @@ async function performAdding(armor){
       }));
       
       
-    await new Promise(res => setTimeout(res, 0));
+    // await new Promise(res => setTimeout(res, 0));
   };
   
   await setSelect(0, armor[0].replace("･", "・"));
