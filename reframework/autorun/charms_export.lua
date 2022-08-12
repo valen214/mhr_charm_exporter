@@ -8,12 +8,12 @@ local TALISMAN_ID_TYPE = 3
 -- https://stackoverflow.com/a/27028488/3142238
 function json_dump(o)
   if type(o) == 'table' then
-     local s = '{ '
+     local s = ''
      for k,v in pairs(o) do
         if type(k) ~= 'number' then k = '"'..k..'"' end
         s = s ..k..':' .. json_dump(v) .. ', '
      end
-     return string.sub(s, 1, -3) .. ' } '
+     return '{ ' .. string.sub(s, 1, -3) .. ' }'
   else
      return tostring(o)
   end
@@ -82,49 +82,132 @@ end
       );
 
 --]]
-local armorToString = function(item)
+local armorToObject = function(item)
   -- local isArmor = item:call("isArmor")
   -- _log(tostring(isArmor));
   -- _log(tostring(item:call("getName")))
   -- _log(tostring(item:call("getArmorData")))
 
   local armorData = item:call("getArmorData"); -- snow.data.ArmorData
+  local baseData = armorData:call("get_BaseData"); -- snow.data.ArmorBaseData
+
+
   local allDecoSlotList = armorData:call("get_AllDecoSlotList");
+  -- snow.data.equip.param.DecorationsSlotData
   local allSkillDataList = armorData:call("get_AllSkillDataList");
 
-  local skillObject = {}
-  local skillIdObject = {}
+  local baseDecoSlotList = baseData:call("get_DecorationsSlotNumList");
+  local baseSkillDataList = baseData:call("get_AllSkillDataList");
+  local baseRegData = baseData:call("get_RegData"); -- snow.data.ArmorElementRegData
 
+
+  local skillObject = {}
+  
   local count = allSkillDataList:call("get_Count")
   for i = 0,count-1,1 do
     local skillData = allSkillDataList:call("get_Item", i);
     if skillData:call("get_EquipSkillId") ~= 0 then
       skillObject[skillData:call("get_Name")] = skillData:call("get_TotalLv")
-      skillIdObject[skillData:call("get_EquipSkillId")] = skillData:call("get_TotalLv")
     end
   end
 
+  local skillDiffObject = {}
+  local activeSkillDataList = armorData:call("getCustomSkillUpList");
+  count = activeSkillDataList:call("get_Count")
+  for i = 0,count-1,1 do
+    local skillData = activeSkillDataList:call("get_Item", i);
+    if skillData:call("get_EquipSkillId") ~= 0 then
+      skillDiffObject[skillData:call("get_Name")] = skillData:call("get_TotalLv")
+    end
+  end
+  activeSkillDataList = armorData:call("getCustomSkillDownList");
+  count = activeSkillDataList:call("get_Count")
+  for i = 0,count-1,1 do
+    local skillData = activeSkillDataList:call("get_Item", i);
+    if skillData:call("get_EquipSkillId") ~= 0 then
+      skillDiffObject[skillData:call("get_Name")] = skillData:call("get_TotalLv")
+    end
+  end
+
+
+  local decoSlot = {};
+  local baseSlot = {};
+  count = allDecoSlotList:call("get_Count");
+  for i=0,count-1,1 do
+    -- snow.data.DecorationBaseData
+    table.insert(decoSlot, allDecoSlotList:call("get_Item", i):call("getSlotLv"));
+  end
+
+  local decoSlotList = armorData:call("getOriginalSlotLvTable");
+  count = decoSlotList:call("get_Count")
+  for i=0,count-1,1 do
+    table.insert(baseSlot, decoSlotList:call("get_Item", i));
+  end;
+
+  table.sort(decoSlot, function (l, r) return l > r; end);
+  table.sort(baseSlot, function (l, r) return l > r; end);
+
+
+  local decoDiff = {}
+  for i=0,2,1 do
+    table.insert(decoDiff, (decoSlot[i] or 0) - (baseSlot[i] or 0));
+  end
+
+
+  -- local orgSlotList = {}
+  -- local orgDecoSlotList = armorData:call("get_OrgDecorationSlotNumList");
+  -- count = orgDecoSlotList:call("get_Count")
+  -- for i=0,count-1,1 do
+  --   orgSlotList[i] = orgDecoSlotList:call("get_Item", i)
+  -- end;
+
+  local defDiff = ( armorData:call("getDefVal") or 0 ) - (
+    armorData:call("getArmorBuildupDef") or 0
+  ) - baseData:call("get_DefVal");
+
+  local elemRegDiff = {}
+  for i = 0,4,1 do
+    elemRegDiff[i] = armorData:call("getRegData", i):call("get_RegVal") - (
+      baseRegData:call("getParam", i):call("get_RegVal")
+    );
+  end;
+
   local armorString = string.format(
-    "\"%s\", [%d, %d, %d], %s, %s",
+    "%s ___ %s ___ %s ___ %d,%s",
     armorData:call("getName"),
-    allDecoSlotList:call("get_Item", 2):call("getSlotLv"),
-    allDecoSlotList:call("get_Item", 1):call("getSlotLv"),
-    allDecoSlotList:call("get_Item", 0):call("getSlotLv"),
-    json_dump(skillObject),
-    json_dump(skillIdObject)
+    json.dump_string(decoDiff),
+    json_dump(skillDiffObject),defDiff,
+    json.dump_string(elemRegDiff)
   )
+  _log(armorString)
 
-  _log(armorString);
 
-
-  return armorString
+  local def_and_elem_diff = {
+    defDiff,
+    table.unpack(elemRegDiff)
+  }
+  return {
+    armorData:call("getName"),
+    defDiff,
+    string.sub(json.dump_string(elemRegDiff), 2, -2),
+    json.dump_string(decoDiff),
+    json_dump(skillDiffObject),
+    -- table.concat(elemRegDiff, ",")
+  };
 
   -- tostring(item:call("get_BuildupPoint"))
 end
 
+local function armorToString(arg)
+  return string.format(
+    "[\"%s\",%s,%s,%s,%s], ",
+    table.unpack(armorToObject(arg))
+  )
+end
 
 
-local function getCharmsStringList()
+
+local function getExportingData()
   local output = {}
   local charmsStringList = {}
   local armorsStringList = {}
@@ -153,7 +236,9 @@ local function getCharmsStringList()
     local itemType = item:get_field("_IdType");
 
     if itemType == 2 then
-      _= armorsStringList << armorToString(item)
+      if item:call("getArmorData"):call("get_CustomEnable") then
+        _= armorsStringList << armorToString(item)
+      end
       
 
       if first then
@@ -181,7 +266,7 @@ local saveToFile = package.loadlib(
 
 
 local charmsFileName = "exported_charms.txt"
-local armorsFileName = "exported_armors.txt"
+local armorsFileName = "exported_armors.js"
 re.on_draw_ui(function()
   if imgui.button(
     "[Charms Export] export charms & armor to " ..
@@ -190,19 +275,90 @@ re.on_draw_ui(function()
   ) then
     
     -- local output = table.concat(charmsStringList, "\n");
-    local output = getCharmsStringList() or {}
+    local output = getExportingData() or {}
 
     local charmsStringList = output["charms"] or {}
     local armorsStringList = output["armors"] or {}
 
+    local js_src = [[
+;(async function(){
+
+  let closeButton = null;
+  while(( closeButton = document.querySelector(
+      `span[class="glyphicon glyphicon-remove"]`
+  ))){
+      
+    closeButton.parentElement.click();
+    closeButton.dispatchEvent(new Event("click", {
+      bubbles: true
+    }));
+    await new Promise(res => setTimeout(res, 200));
+  }
+   
+  let armors = [
+]] .. (
+  table.concat(armorsStringList, "\n")
+) .. [[
+  ];
+
+let i = 0;
+async function performAdding(armor){
+  if(!armor) return;
+  console.log(armor);
+  
+  const selects = [ ...document.querySelectorAll("select") ]
+  const submitButton = document.querySelector("button");
+  
+  const setSelect = (i, value) => {
+      selects[i].value = value;
+      selects[i].dispatchEvent(new Event('change', {
+          bubbles: true
+      }));
+  };
+  
+  setSelect(0, armor[0].replace("･", "・"));
+  for(let i of [1,2,3,4,5,6]){
+      setSelect(i, armor[i].toString());
+  }
+  
+  let slots = armor[7];
+  for(let i of [0, 1, 2]){
+      setSelect(7+i, slots[i].toString());
+  }
+  
+  let skills = armor[8];
+  let startFrom = 10;
+  let skillEntries = Object.entries(skills);
+  for(let i of [0, 1, 2, 3]){
+      let [ skillName, skillLvDiff ] = skillEntries[i] || [ "", 0 ];
+      
+      setSelect(startFrom++, skillName);
+      setSelect(startFrom++, skillLvDiff.toString());
+  }
+  
+  await new Promise(res => setTimeout(res, 100));
+  
+  let click_result = submitButton.click();
+  
+  if(armors.length){
+      setTimeout(() => {
+          performAdding(armors.pop());
+      }, 100);
+  }
+}
+
+performAdding(armors.pop());
+      
+}());
+    ]]
     if saveToFile then
       saveToFile(
           "reframework/data/" .. charmsFileName,
           table.concat(charmsStringList, "\n")
+          
       );
       saveToFile(
-          "reframework/data/" .. armorsFileName,
-          table.concat(armorsStringList, "\n")
+          "reframework/data/" .. armorsFileName, js_src
       );
     else
       json.dump_file(charmsFileName, charmsStringList)
@@ -215,6 +371,5 @@ re.on_draw_ui(function()
   end
 end)
 
-_log("HEEYEY22331551");
 
 log.info("[Charms Export] initialized.")
