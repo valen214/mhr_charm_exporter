@@ -21,7 +21,7 @@ end
 
 
 local _log = function(str)
-  log.debug("[Charms Export] " .. (str or ""));
+  log.debug("[Charms Export] " .. tostring(str or ""));
 end;
 
 local DataShortcut = sdk.find_type_definition("snow.data.DataShortcut");
@@ -221,6 +221,7 @@ local function getExportingData()
     return charmsStringList
   end
   
+  
   local EquipmentBox = DataManager:get_field("_PlEquipBox");
   
   local InventoryList = EquipmentBox:get_field("_WeaponArmorInventoryList");
@@ -292,7 +293,7 @@ re.on_draw_ui(function()
     closeButton.dispatchEvent(new Event("click", {
       bubbles: true
     }));
-    await new Promise(res => setTimeout(res, 200));
+    await new Promise(res => setTimeout(res, 10));
   }
    
   let armors = [
@@ -309,21 +310,31 @@ async function performAdding(armor){
   const selects = [ ...document.querySelectorAll("select") ]
   const submitButton = document.querySelector("button");
   
-  const setSelect = (i, value) => {
+  const setSelect = async (i, value) => {
+      
       selects[i].value = value;
+      let childOption = selects[i].querySelector(`option[value="${value}"]`);
+      
+      console.log("setSelect", i, value, childOption);
+      childOption.dispatchEvent(new Event("click", {
+         bubbles: true 
+      }));
       selects[i].dispatchEvent(new Event('change', {
           bubbles: true
       }));
+      
+      
+    await new Promise(res => setTimeout(res, 0));
   };
   
-  setSelect(0, armor[0].replace("･", "・"));
+  await setSelect(0, armor[0].replace("･", "・"));
   for(let i of [1,2,3,4,5,6]){
-      setSelect(i, armor[i].toString());
+      await setSelect(i, armor[i].toString());
   }
   
   let slots = armor[7];
   for(let i of [0, 1, 2]){
-      setSelect(7+i, slots[i].toString());
+      await setSelect(7+i, slots[i].toString());
   }
   
   let skills = armor[8];
@@ -332,18 +343,18 @@ async function performAdding(armor){
   for(let i of [0, 1, 2, 3]){
       let [ skillName, skillLvDiff ] = skillEntries[i] || [ "", 0 ];
       
-      setSelect(startFrom++, skillName);
-      setSelect(startFrom++, skillLvDiff.toString());
+      await setSelect(startFrom++, skillName);
+      await setSelect(startFrom++, skillLvDiff.toString());
   }
   
-  await new Promise(res => setTimeout(res, 100));
+  await new Promise(res => setTimeout(res, 50));
   
   let click_result = submitButton.click();
   
   if(armors.length){
       setTimeout(() => {
           performAdding(armors.pop());
-      }, 100);
+      }, 50);
   }
 }
 
