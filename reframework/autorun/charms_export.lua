@@ -149,10 +149,11 @@ local armorToObject = function(item)
 
 
   local decoDiff = {}
-  for i=0,2,1 do
+  for i=1,3,1 do
     table.insert(decoDiff, (decoSlot[i] or 0) - (baseSlot[i] or 0));
   end
 
+  -- _log("deco: " .. json_dump(decoSlot) .. json_dump(baseSlot) .. json_dump(decoDiff));
 
   -- local orgSlotList = {}
   -- local orgDecoSlotList = armorData:call("get_OrgDecorationSlotNumList");
@@ -179,7 +180,7 @@ local armorToObject = function(item)
     json_dump(skillDiffObject),defDiff,
     json.dump_string(elemRegDiff)
   )
-  _log(armorString)
+  -- _log(armorString)
 
 
   local def_and_elem_diff = {
@@ -316,12 +317,16 @@ async function performAdding(armor){
       let childOption = selects[i].querySelector(`option[value="${value}"]`);
       
       console.log("setSelect", i, value, childOption);
-      childOption.dispatchEvent(new Event("click", {
-         bubbles: true 
-      }));
-      selects[i].dispatchEvent(new Event('change', {
-          bubbles: true
-      }));
+      if(childOption){
+        childOption.dispatchEvent(new Event("click", {
+          bubbles: true 
+        }));
+      }
+      if(selects && selects[i]){
+        selects[i].dispatchEvent(new Event('change', {
+            bubbles: true
+        }));
+      }
       
       
     // await new Promise(res => setTimeout(res, 0));
@@ -347,14 +352,14 @@ async function performAdding(armor){
       await setSelect(startFrom++, skillLvDiff.toString());
   }
   
-  await new Promise(res => setTimeout(res, 50));
+  await new Promise(res => setTimeout(res, 0));
   
   let click_result = submitButton.click();
   
   if(armors.length){
       setTimeout(() => {
           performAdding(armors.pop());
-      }, 50);
+      }, 0);
   }
 }
 
