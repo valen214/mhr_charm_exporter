@@ -6,6 +6,7 @@ Huge part of the script is translated from https://github.com/Fexty12573/mhr-cha
 
 ## Armor Exporter Steps
 1-5. same as charm
+
 6. copy content from "exported_armors.js" instead
 7. navigate to mhrise.wiki-db.com/sim and click the "Qurious Crafting" tab
 8. Open browser "developer console" (by clicking F12, or "inspect element" in right click menu, please google yourself)
