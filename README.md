@@ -4,7 +4,17 @@ for use on https://mhrise.wiki-db.com/sim/
 ## Thanks
 Huge part of the script is translated from https://github.com/Fexty12573/mhr-charm-item-editor
 
-## Steps
+## Armor Exporter Steps
+1-5. same as charm
+6. copy content from "exported_armors.js" instead
+7. navigate to mhrise.wiki-db.com/sim and click the "Qurious Crafting" tab
+8. Open browser "developer console" (by clicking F12, or "inspect element" in right click menu, please google yourself)
+9. paste the content and enter, and see the magic happens
+![mhr sim armor import](https://i.imgur.com/3RQ0VXh.gif)
+
+
+
+## Charm Exporter Steps
 1. Set up [REFRAMEWORK](https://www.nexusmods.com/monsterhunterrise/mods/26)
 2. Download [reframework.zip](https://github.com/valen214/mhr_charm_exporter/releases/download/v2.1.0/reframework.zip) and extract the content under <MHR Game Directory>/reframework
    - 2.5 create the folder 'reframework/data' if it doesn't exist yet
