@@ -199,11 +199,16 @@ local armorToObject = function(item)
   -- tostring(item:call("get_BuildupPoint"))
 end
 
+-- http://lua-users.org/wiki/StringLibraryTutorial
+-- ?????????????
 local function armorToString(arg)
-  return string.format(
-    "[\"%s\",%s,%s,%s,%s], ",
+  return (
+    "%s,%s,%s,%s,%s"
+  ):format(
     table.unpack(armorToObject(arg))
-  )
+  ):gsub(
+    "[%[%]%{%}\"\"]", ""
+  ):gsub(":", ","):gsub("･", "・")
 end
 
 
@@ -268,7 +273,7 @@ local saveToFile = package.loadlib(
 
 
 local charmsFileName = "exported_charms.txt"
-local armorsFileName = "exported_armors.js"
+local armorsFileName = "exported_armors.txt"
 re.on_draw_ui(function()
   if imgui.button(
     "[Charms Export] export charms & armor to " ..
@@ -282,91 +287,7 @@ re.on_draw_ui(function()
     local charmsStringList = output["charms"] or {}
     local armorsStringList = output["armors"] or {}
 
-    local js_src = [[
-;(async function(){
 
-  let closeButton = null;
-  while(( closeButton = document.querySelector(
-      `span[class="glyphicon glyphicon-remove"]`
-  ))){
-      
-    closeButton.parentElement.click();
-    closeButton.dispatchEvent(new Event("click", {
-      bubbles: true
-    }));
-    await new Promise(res => setTimeout(res, 10));
-  }
-   
-  let armors = [
-]] .. (
-  table.concat(armorsStringList, "\n")
-) .. [[
-  ];
-
-let i = 0;
-async function performAdding(armor){
-  if(!armor) return;
-  console.log(armor);
-  
-  const selects = [ ...document.querySelectorAll("select") ]
-  const submitButton = document.querySelector("button");
-  
-  const setSelect = async (i, value) => {
-      
-      selects[i].value = value;
-      let childOption = selects[i].querySelector(`option[value="${value}"]`);
-      
-      console.log("setSelect", i, value, childOption);
-      if(childOption){
-        childOption.dispatchEvent(new Event("click", {
-          bubbles: true 
-        }));
-      }
-      if(selects && selects[i]){
-        selects[i].dispatchEvent(new Event('change', {
-            bubbles: true
-        }));
-      }
-      
-      
-    // await new Promise(res => setTimeout(res, 0));
-  };
-  
-  await setSelect(0, armor[0].replace("･", "・"));
-  for(let i of [1,2,3,4,5,6]){
-      await setSelect(i, armor[i].toString());
-  }
-  
-  let slots = armor[7];
-  for(let i of [0, 1, 2]){
-      await setSelect(7+i, slots[i].toString());
-  }
-  
-  let skills = armor[8];
-  let startFrom = 10;
-  let skillEntries = Object.entries(skills);
-  for(let i of [0, 1, 2, 3]){
-      let [ skillName, skillLvDiff ] = skillEntries[i] || [ "", 0 ];
-      
-      await setSelect(startFrom++, skillName);
-      await setSelect(startFrom++, skillLvDiff.toString());
-  }
-  
-  await new Promise(res => setTimeout(res, 0));
-  
-  let click_result = submitButton.click();
-  
-  if(armors.length){
-      setTimeout(() => {
-          performAdding(armors.pop());
-      }, 0);
-  }
-}
-
-performAdding(armors.pop());
-      
-}());
-    ]]
     if saveToFile then
       saveToFile(
           "reframework/data/" .. charmsFileName,
@@ -374,7 +295,8 @@ performAdding(armors.pop());
           
       );
       saveToFile(
-          "reframework/data/" .. armorsFileName, js_src
+          "reframework/data/" .. armorsFileName,
+          table.concat(armorsStringList, "\n")
       );
     else
       json.dump_file(charmsFileName, charmsStringList)
